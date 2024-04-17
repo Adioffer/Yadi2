@@ -1,14 +1,7 @@
-var DEBUG = 1;
-var LISTINGCLASS = "card_cardBox__esd43 card-8_card8__MqKlp";
-var PRICECLASS = "price_price__Y8TeC";
-var LISTINGCONTENTCLASS = "item-layout_itemContent__yxESb";
-var AGENCYCLASS = "price-and-extra_startFrom__rBYth desktop-only";
-
-function debuglog(str) {
-    if (DEBUG) {
-        console.log(str);
-    }
-}
+var LISTINGCLASS = "card_cardBox__";
+var LISTINGCONTENTCLASS = "item-layout_itemContent__";
+var PRICECLASS = "price_price__";
+var AGENCYCLASS = "price-and-extra_startFrom__";
 
 function myGetDate(daysBehind) {
     var date = new Date();
@@ -21,10 +14,10 @@ function myGetDate(daysBehind) {
 }
 
 function paintListingsOf(date, color) {
-    debuglog("Searching for listings of " + date);
+    console.log("Searching for listings of " + date);
     
-    var fls = document.getElementsByClassName(LISTINGCLASS);
-    debuglog("Found " + String(fls.length) + " listings in this page");
+    var fls = document.querySelectorAll('[class^="' + LISTINGCLASS + '"]');
+    console.log("Found " + String(fls.length) + " listings in this page");
     
     for (let fl of fls) {
         images = fl.getElementsByTagName("img")
@@ -34,24 +27,24 @@ function paintListingsOf(date, color) {
             let dateMatches = (firstImageSrc.search(date) != -1);
     
             // Price constraint
-            let kaki = String(fl.getElementsByClassName(PRICECLASS)[0].innerHTML);
+            let kaki = String(fl.querySelectorAll('[class^="' + PRICECLASS + '"]')[0].innerHTML);
             let hasPriceTag = ! (kaki.search("לא צוין מחיר") != -1);
     
             // Agencies constraint
-            let fuckers = fl.getElementsByClassName(AGENCYCLASS);
+            let fuckers = fl.querySelectorAll('[class^="' + AGENCYCLASS + '"]');
 
             if (fuckers.length==0 && dateMatches && hasPriceTag) {
-                debuglog("Found a matching listing!");
-                let haha = fl.getElementsByClassName("item-layout_itemContent__yxESb")[0];
+                console.log("Found a matching listing!");
+                let haha = fl.querySelectorAll('[class^="' + LISTINGCONTENTCLASS + '"]')[0];
                 haha.style.backgroundColor = color;
-                debuglog("Patched with " + color + " !");
+                console.log("Patched with " + color + " !");
             }
             else {
-                debuglog("Skipping");
+                console.log("Skipping");
             }
         } catch (error) {
             // just skip this listing
-            debuglog("Skipping listing. Error: " + error);
+            console.log("Skipping listing. Error: " + error);
         }        
     }
 }
