@@ -1,19 +1,14 @@
 {
     "name": "Yadi2 - New Listings Finder",
-    "action": {},
     "manifest_version": 3,
     "version": "0.4",
     "description": "Marks new Yad2 listings",
     "permissions": [
-      "activeTab",
-      "scripting"
+        "activeTab",
+        "scripting"
     ],
-    "content_scripts": [
-        {
-            "matches": [
-                "*://*.yad2.co.il/*"
-            ],
-            "js": ["main.js"]
-        }
-    ]
+    "action": {
+        "default_title": "Yadi2",
+        "default_popup": "popup.html"
+    }
 }
