@@ -20,6 +20,6 @@ export function checkAgencies(listing, htmlAgencyClass) {
 }
 
 export function paintListing(listing, color, htmlListingContentClass) {
-    let haha = listing.querySelectorAll('[class^="' + htmlListingContentClass + '"]')[0];
-    haha.style.backgroundColor = color;
+    let listingContent = listing.querySelectorAll('[class^="' + htmlListingContentClass + '"]')[0];
+    listingContent.style.backgroundColor = color;
 }

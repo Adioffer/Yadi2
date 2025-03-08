@@ -9,6 +9,14 @@
     ],
     "action": {
         "default_title": "Yadi2",
-        "default_popup": "popup.html"
-    }
+        "default_popup": "src/popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.yad2.co.il/*"
+            ],
+            "js": ["dist/content_script.bundle.js"]
+        }
+    ]
 }
