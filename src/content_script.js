@@ -1,7 +1,12 @@
 'use strict';
 
-import { paintAllListingsOfDate as paintCardboxListings } from './painter/painter_cardbox.js';
-import { paintAllListingsOfDate as paintProductBlockListings } from './painter/painter_product_block.js';
+import { CardboxListingFinder, ProductBlockListingFinder } from './listing_finder_util.js';
+import { paintListing } from './painter.js';
+
+function my_print(message) {
+    // alert(message);
+    console.log(message);
+}
 
 function dateOfXDaysAgo(daysAgo) {
     let date = new Date();
@@ -13,25 +18,47 @@ function dateOfXDaysAgo(daysAgo) {
     return yyyy + mm + dd;
 }
 
+function paintAllListingsOfDate(listingFinder, date, color) {
+    my_print("Searching for listings of " + date);
+
+    let listings = document.querySelectorAll('[class^="' + listingFinder.listingClass + '"]');
+
+    my_print("Found " + String(listings.length) + " listings in this page");
+
+    for (let listing of listings) {
+        try {
+            let listing_matches = listingFinder.validateListingCriteria(listing, date);
+
+            if (listing_matches) {
+                my_print("Found a matching listing!");
+                paintListing(listing, listingFinder.listingContentClass, color);
+            }
+        } catch (error) {
+            // just skip this listing
+            my_print("Exception in handling listing. Error: " + error);
+        }
+    }
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "paintListings") {
         const { pageType, daysCount } = request;
-        let paintFunction;
+        let listingFinder;
 
         if (pageType === "cardbox") {
-            paintFunction = paintCardboxListings;
+            listingFinder = new CardboxListingFinder();
         } else if (pageType === "product_block") {
-            paintFunction = paintProductBlockListings;
+            listingFinder = new ProductBlockListingFinder();
         } else {
             console.log("Unknown page type: " + pageType);
             return;
         }
 
         // Clear all existing paintings
-        paintFunction(0, "white"); // This is a scam but it works
+        paintAllListingsOfDate(listingFinder, 0, "white"); // This is a scam but it works
 
         for (let i = 0; i < daysCount; i++) {
-            paintFunction(dateOfXDaysAgo(-i), "green");
+            paintAllListingsOfDate(listingFinder, dateOfXDaysAgo(-i), "green");
         }
 
         sendResponse({ status: "done" });

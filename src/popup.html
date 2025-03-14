@@ -1,51 +1,53 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Yadi2</title>
-    <style>
-      body {
-        text-align: center;
-      }
+<html lang="en">
 
-      button {
-        margin: 5px;
-        outline: none;
-      }
+<head>
+  <title>Yadi2</title>
+  <style>
+    body {
+      text-align: center;
+    }
 
-      button:hover {
-        outline: #80deea dotted thick;
-      }
-    </style>
-    <!--
+    button {
+      margin: 5px;
+      outline: none;
+    }
+
+    button:hover {
+      outline: #80deea dotted thick;
+    }
+  </style>
+  <!--
       - JavaScript and HTML must be in separate files
      -->
-  </head>
+</head>
 
-  <body>
-    <h1>Yadi2</h1>
+<body>
+  <h1>Yadi2</h1>
 
-    <!-- Page Type Selector -->
-    <fieldset>
-        <legend>Select page type:</legend>
-      
-        <div>
-            <input type="radio" id="cardbox" name="pageType" value="cardbox" checked />
-            <label for="cardbox">cardbox</label>
-        </div>
-      
-        <div>
-            <input type="radio" id="product_block" name="pageType" value="product_block" />
-            <label for="product_block">product_block</label>
-        </div>
-    </fieldset>
+  <!-- Page Type Selector -->
+  <fieldset>
+    <legend>Select page type:</legend>
 
-    <!-- Days Count -->
-    <label for="days">Days Included (1..100):</label>
-    <input type="number" id="days" name="days" min="1" max="100" value="1" />
- 
-    <!-- Go Button -->
-    <button id="go">Go</button>
+    <div>
+      <input type="radio" id="cardbox" name="pageType" value="cardbox" checked />
+      <label for="cardbox">cardbox</label>
+    </div>
 
-    <script type="module" src="popup.js"></script>
-  </body>
+    <div>
+      <input type="radio" id="product_block" name="pageType" value="product_block" />
+      <label for="product_block">product_block</label>
+    </div>
+  </fieldset>
+
+  <!-- Days Count -->
+  <label for="days">Days Included (1..100):</label>
+  <input type="number" id="days" name="days" min="1" max="100" value="1" />
+
+  <!-- Go Button -->
+  <button id="go">Go</button>
+
+  <script type="module" src="popup.js"></script>
+</body>
+
 </html>
