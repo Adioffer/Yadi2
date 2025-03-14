@@ -1,7 +1,7 @@
 {
     "name": "Yadi2 - New Listings Finder",
     "manifest_version": 3,
-    "version": "0.5",
+    "version": "1.0",
     "description": "Marks new Yad2 listings",
     "permissions": [
         "activeTab",
@@ -16,7 +16,9 @@
             "matches": [
                 "*://*.yad2.co.il/*"
             ],
-            "js": ["dist/content_script.bundle.js"]
+            "js": [
+                "dist/content_script.bundle.js"
+            ]
         }
     ]
 }
