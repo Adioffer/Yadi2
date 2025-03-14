@@ -1,6 +1,6 @@
 'use strict';
 
-import { CardboxListingFinder, ProductBlockListingFinder } from './listing_finder_util.js';
+import { NadlanListingFinder, GalleryListingFinder } from './listing_finder.js';
 import { paintListing } from './painter.js';
 
 function my_print(message) {
@@ -22,9 +22,9 @@ function paintListingsOfDate(listingFinder, date, color) {
     my_print("Searching for listings of " + date);
 
     let listings = document.querySelectorAll('[class^="' + listingFinder.listingClass + '"]');
-
     my_print("Found " + String(listings.length) + " listings in this page");
 
+    let matches = 0;
     for (let listing of listings) {
         try {
             let listing_matches = listingFinder.validateListingCriteria(listing, date);
@@ -32,12 +32,15 @@ function paintListingsOfDate(listingFinder, date, color) {
             if (listing_matches) {
                 my_print("Found a matching listing!");
                 paintListing(listing, listingFinder.listingContentClass, color);
+                matches++;
             }
         } catch (error) {
             // just skip this listing
             my_print("Exception in handling listing. Error: " + error);
         }
     }
+
+    return matches;
 }
 
 function paintListingsOfDateRange(listingFinder, daysCount) {
@@ -45,9 +48,12 @@ function paintListingsOfDateRange(listingFinder, daysCount) {
     paintListingsOfDate(listingFinder, 0, "white"); // This is a scam but it works
 
     // Paint listings of the last `daysCount` days
+    let matches = 0;
     for (let i = 0; i < daysCount; i++) {
-        paintListingsOfDate(listingFinder, dateOfXDaysAgo(-i), "green");
+        matches += paintListingsOfDate(listingFinder, dateOfXDaysAgo(-i), "green");
     }
+
+    return matches;
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -55,9 +61,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const { daysCount } = request;
 
         // Paint listings using both listing finders
-        paintListingsOfDateRange(new CardboxListingFinder(), daysCount);
-        paintListingsOfDateRange(new ProductBlockListingFinder(), daysCount);
+        // It causes a lot of errors to be printed to console, but at least it works
+        let matches = 0;
+        matches += paintListingsOfDateRange(new NadlanListingFinder(), daysCount);
+        matches += paintListingsOfDateRange(new GalleryListingFinder(), daysCount);
 
-        sendResponse({ status: "done" });
+        sendResponse({ status: "done", matches: matches });
     }
 });

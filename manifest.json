@@ -1,7 +1,7 @@
 {
     "name": "Yadi2 - New Listings Finder",
     "manifest_version": 3,
-    "version": "0.4",
+    "version": "0.5",
     "description": "Marks new Yad2 listings",
     "permissions": [
         "activeTab",

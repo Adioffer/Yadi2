@@ -12,7 +12,11 @@ function onGoClicked() {
             action: "paintListings",
             daysCount: daysCount
         }, (response) => {
-            console.log(response.status);
+            if (response && response.status === "done" && response.matches > 0) {
+                document.getElementById('matchesCount').innerText = `Matches found: ${response.matches}`;
+            } else {
+                document.getElementById('matchesCount').innerText = 'No matches found.';
+            }
         });
     });
 }
