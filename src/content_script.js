@@ -18,7 +18,7 @@ function dateOfXDaysAgo(daysAgo) {
     return yyyy + mm + dd;
 }
 
-function paintAllListingsOfDate(listingFinder, date, color) {
+function paintListingsOfDate(listingFinder, date, color) {
     my_print("Searching for listings of " + date);
 
     let listings = document.querySelectorAll('[class^="' + listingFinder.listingClass + '"]');
@@ -40,26 +40,23 @@ function paintAllListingsOfDate(listingFinder, date, color) {
     }
 }
 
+function paintListingsOfDateRange(listingFinder, daysCount) {
+    // Clear all existing paintings
+    paintListingsOfDate(listingFinder, 0, "white"); // This is a scam but it works
+
+    // Paint listings of the last `daysCount` days
+    for (let i = 0; i < daysCount; i++) {
+        paintListingsOfDate(listingFinder, dateOfXDaysAgo(-i), "green");
+    }
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "paintListings") {
-        const { pageType, daysCount } = request;
-        let listingFinder;
+        const { daysCount } = request;
 
-        if (pageType === "cardbox") {
-            listingFinder = new CardboxListingFinder();
-        } else if (pageType === "product_block") {
-            listingFinder = new ProductBlockListingFinder();
-        } else {
-            console.log("Unknown page type: " + pageType);
-            return;
-        }
-
-        // Clear all existing paintings
-        paintAllListingsOfDate(listingFinder, 0, "white"); // This is a scam but it works
-
-        for (let i = 0; i < daysCount; i++) {
-            paintAllListingsOfDate(listingFinder, dateOfXDaysAgo(-i), "green");
-        }
+        // Paint listings using both listing finders
+        paintListingsOfDateRange(new CardboxListingFinder(), daysCount);
+        paintListingsOfDateRange(new ProductBlockListingFinder(), daysCount);
 
         sendResponse({ status: "done" });
     }

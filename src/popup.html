@@ -25,24 +25,9 @@
 <body>
   <h1>Yadi2</h1>
 
-  <!-- Page Type Selector -->
-  <fieldset>
-    <legend>Select page type:</legend>
-
-    <div>
-      <input type="radio" id="cardbox" name="pageType" value="cardbox" checked />
-      <label for="cardbox">cardbox</label>
-    </div>
-
-    <div>
-      <input type="radio" id="product_block" name="pageType" value="product_block" />
-      <label for="product_block">product_block</label>
-    </div>
-  </fieldset>
-
   <!-- Days Count -->
-  <label for="days">Days Included (1..100):</label>
-  <input type="number" id="days" name="days" min="1" max="100" value="1" />
+  <label for="days">Days Included:</label>
+  <input type="number" id="days" name="days" min="0" max="100" value="1" />
 
   <!-- Go Button -->
   <button id="go">Go</button>

@@ -22,7 +22,7 @@ export class CardboxListingFinder extends ListingFinder {
         this.priceClass = "price_price__";
         this.agencyClass = "price-and-extra_startFrom__";
     }
-    
+
     checkPriceTag(listing) {
         let htmlPrice = String(listing.querySelectorAll('[class^="' + this.priceClass + '"]')[0].innerHTML);
         let hasPriceTag = (htmlPrice.search("לא צוין מחיר") == -1);
